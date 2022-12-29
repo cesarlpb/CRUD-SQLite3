@@ -15,7 +15,18 @@ con.close()
 @app.route('/')  # root : main page
 def index():
     # by default, 'render_template' looks inside the folder 'template'
-    return render_template('index.html', title='Inicio')
+    try:
+        con = sql.connect(db_name)
+        c =  con.cursor() # cursor
+        c.execute(f"SELECT * FROM {db_table}")
+        questions = c.fetchall()   # tomamos todos los valores del select
+        con.commit() # apply changes
+        return render_template('index.html', questions=questions, title='Inicio')
+    except con.Error as err: # if error
+        # then display the error in 'database_error.html' page
+        return render_template('db_error.html', error=err, title='Error de conexión')
+    finally:
+        con.close() # close the connection
 
 # Create question
 @app.route('/create', methods=['GET', 'POST'])

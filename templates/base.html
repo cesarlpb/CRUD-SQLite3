@@ -15,15 +15,56 @@
     {% endblock %}
 </head>
 <body>
-    <h1> {{ title }} </h1>
-    <div>
+    {% block navbar %}
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('index') }}">App de Preguntas</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{{ url_for('index') }}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('create') }}">Crear Pregunta</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('questions') }}">Ver Preguntas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% endblock %}
+
+    <!-- block main -->
+    <div class="container col-6">
+        <h1 class="mt-5 mb-2 text-center">{{ title }}</h1>
+        <hr>
         {% block main %}
         {% endblock %}
     </div>
+
     {% block footer %}
-    <footer id="footer" class="bg bg-dark text-light text-center fixed-bottom pt-2 pb-1">
+    <footer id="footer" class="bg bg-dark text-light text-center fixed-bottom pt-5 pb-4">
         <h4>App de Preguntas</h4>
-        <p>Ir a <a href="{{url_for('index')}}">Inicio</a></p>        
+        <p class="d-flex align-items-center justify-content-center">
+            <a class="btn btn-light" href="{{url_for('index')}}">
+                <img class="mr-1" width=20 src="{{ url_for('static', filename='/img/iconos/home.png') }}" alt="inicio">
+                Ir a Inicio
+            </a>
+        </p>    
+        
+        <h3>Stack</h3>
+        <div class="container col-3">
+            <ul style="list-style-type: disc; padding: 20px;">
+                <li><strong>Front-end:</strong> HTML, CSS, Bootstrap</li>
+                <li><strong>Back-end:</strong> Flask, Python, SQLite3</li>
+                <li><strong>Despliegue:</strong> PythonEverywhere</li>
+            </ul>
+        </div>
     </footer>
     {% endblock %}
 </body>
