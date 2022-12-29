@@ -1,13 +1,9 @@
-<!-- correct.html  // extender base.html -->
+<!-- correct.html  -->
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Enhorabuena</title>
-</head>
-<body>
-    <h2> La respuesta es correcta. </h2>
+{% extends "base.html" %}
 
-    <p>Ir a <a href="{{url_for('index')}}">Inicio</a></p>
-</body>
-</html>
+{% block main %}
+
+    <h2> La respuesta {{ id }} es correcta. </h2>
+
+{% endblock %}

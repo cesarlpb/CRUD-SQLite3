@@ -115,7 +115,8 @@ def question(id):
             con.close() # close the connection
 
         if submitted_answer == correct_answer:
-            return render_template('correct.html');
+            title = '¡Correcto!'
+            return render_template('correct.html', id=id, title=title)
         else:
             return render_template('sorry.html',
                 answer = correct_answer,
