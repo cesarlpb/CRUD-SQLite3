@@ -127,3 +127,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Ignoramos base de datos de SQLite3
+*.db
+*.sqlite3
+app.db
