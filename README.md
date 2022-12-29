@@ -32,3 +32,9 @@ sqlite3 nombre_base_datos.db
 python3 app.py
 ```
 * Abre el puerto 5010. Se puede cambiar en `app.py`.
+
+## Ramas
+
+- `main`: Contiene la aplicación con SQLite3 en su primera versión, enlace: [main](https://github.com/cesarlpb/CRUD-SQLite3)
+- `refactor`: Creamos funciones para evitar repeticiones de código con bloques try/except, enlace: [refactor](https://github.com/cesarlpb/CRUD-SQLite3/tree/refactor)
+- `mysql`: Implementamos CRUD con MySQL
