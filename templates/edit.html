@@ -5,24 +5,26 @@
 {% block main %}
     <h2> Editar Pregunta {{ id }} </h2>
 
+<div class="container col-6">    
     <form method='post'>
-
-            <b>Pregunta</b> 
-            <br>
-            <label for="question"><small>Pregunta actual: {{ question }}</small></label>
-            <br>
-            <input id="question" type="text" name="question"><br>
             
-            <br>
-            <b>Respuesta</b> 
-            <br>
-            <label for="answer"><small>Respuesta actual: {{ answer }}</small></label>
-            <br>
-            <input type="text" name="answer"><br>
-            
-            <br>
-            <input type="submit" name="submit" value="Enviar">
-            <input type="reset" name="reset" value="Borrar"><br>
+        <label for="question" class="form-label">
+            <h3>Pregunta</h3>
+            <small>Pregunta actual: {{ question }}</small>
+        </label>
+        <br>
+        <input id="question" class="form-control" type="text" name="question">
+        <br>
+        <label for="answer" class="form-label">
+            <h3>Respuesta</h3>
+            <small>Respuesta actual: {{ answer }}</small>
+        </label>
+        <input class="form-control" type="text" name="answer"><br>
+        
+        <div class="d-flex justify-content-end">
+            <input type="submit" class="d-inline-block btn btn-primary mr-2 px-3" name="submit" value="Enviar">
+            <input type="reset" class="d-inline-block btn btn-danger ml-0 px-3" name="reset" value="Borrar"><br>
+        </div>
     </form>
-
+</div>
 {% endblock %}

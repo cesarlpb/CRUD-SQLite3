@@ -43,7 +43,6 @@ def create():
             return render_template('db_error.html', error=err, title='Error de conexión')
         finally:
             con.close() # close the connection
-
     else:
         return 'Método no permitido', 405 # 400 de Bad Request o 405 de método no permitido
 

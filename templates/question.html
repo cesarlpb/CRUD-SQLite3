@@ -5,9 +5,17 @@
 
     <h2> {{ question }} </h2>
 
+<div class="container col-6">
     <form method='post'>
-        <b>Respuesta</b> <input type="text" name="answer"><br>
-        <input type="submit" name="submit" value="Enviar">
-        <input type="reset" name="reset" value="Borrar"><br>
+        <label for="answer" class="form-label"><b>Respuesta</b></label>
+        <input id="answer" class="form-control" type="text" name="answer">
+        <br>
+        <br>
+        <div class="d-flex justify-content-end">
+            <input type="submit" class="d-inline-block btn btn-primary mr-2 px-3" name="submit" value="Enviar">
+            <input type="reset" class="d-inline-block btn btn-danger ml-0 px-3" name="reset" value="Borrar"><br>
+        </div>
+
     </form>
+</div> 
 {% endblock %}
