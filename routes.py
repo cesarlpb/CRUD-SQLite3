@@ -1,7 +1,8 @@
 # routes.py
-import sqlite3 as sql
+import sqlite3 as sql # -> quitar import
 from app import app
 from flask import render_template, request
+from utils import *
 
 # connect to qa_database.sq (database will be created, if not exist)
 db_name = 'app.db'
@@ -79,7 +80,9 @@ def questions():
 @app.route('/question/<int:id>', methods=['GET', 'POST'])
 def question(id):
     if request.method == 'GET':
+        # questions = read_from_db(id)
         try:
+
             con = sql.connect(db_name)
             c =  con.cursor() # cursor
             query = f"SELECT * FROM {db_table} WHERE id = {id}"
@@ -87,6 +90,8 @@ def question(id):
             questions = c.fetchone()
             con.commit() # apply changes
             # go to thanks page : pass the value of tuple using question[0]
+            
+            
             return render_template('question.html', question=questions[1], title='Pregunta')
         except con.Error as err: # if error
             # then display the error in 'database_error.html' page
@@ -96,6 +101,8 @@ def question(id):
     else: # request.method == 'POST':
         # read and check answers
         submitted_answer = request.form['answer']
+
+    # return
 
         # code to read the answer from database
         try:

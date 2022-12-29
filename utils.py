@@ -1,20 +1,40 @@
+#%%
+import sqlite3 as sql
+
 # Read from db functions
-def read_from_db(db_name, db_table, cols, id):
+def read_from_db(db_name : str, db_table : str, cols : list, id : int):
     # si no recibe id, entonces devuelve todos los registros
     # si recibe id, entonces devuelve el registro con ese id
-    pass
-    # try:
-    #     con = sql.connect(db_name)
-    #     c =  con.cursor()
-    #     c.execute(f"SELECT * FROM {db_table} WHERE id = {id}")
-    #     id, question, answer = c.fetchone() # current values for id, question, answer
-    #     con.commit()
-    #     return id, question, answer
-    # except con.Error as err: # if error
-    #     # then display the error in 'database_error.html' page
-    #     return render_template('db_error.html', error=err, title='Error de conexión')
-    # finally:
-    #     con.close()
+    try:
+        con = sql.connect(db_name)
+        c =  con.cursor()
+        
+        if cols == []:
+            db_cols = '*'
+        elif len(cols) <= 3:
+            valid_cols = ['id', 'question', 'answer']
+            for col in cols:
+                if col.lower() not in valid_cols:
+                    raise Exception(f'{col} no es una columna válida')
+            db_cols = ', '.join(cols)
+        
+        if id < 1:
+            c.execute(f"SELECT {db_cols} FROM {db_table}")
+            questions = c.fetchall()
+            return questions
+        else:
+            c.execute(f"SELECT {db_cols} FROM {db_table} WHERE id = {id}")
+            question = c.fetchone()
+            return question
+    except con.Error as err: # if error
+        return err
+    finally:
+        data = c.execute(f"SELECT * FROM {db_table}")
+        cols = []
+        for column in data.description:
+            cols.append(column[0])
+        print(cols)
+        con.close()
 
 # Write to db functions
 def write_to_db(db_name, db_table, cols, values):
@@ -61,3 +81,4 @@ def delete_from_db(db_name, db_table, id):
     #     return render_template('db_error.html', error=err, title='Error de conexión')
     # finally:
     #     con.close() # close the connection
+# %%
