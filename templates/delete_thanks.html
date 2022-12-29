@@ -1,13 +1,7 @@
 <!-- createThanks.html  -->
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>¡Gracias!</title>
-</head>
-<body>
-    <h1>Se ha borrado la pregunta con id: {{ id }}</h1>
+{% extends 'base.html' %}
 
-    <p>Ir a <a href="{{url_for('index')}}">Inicio</a></p>
-</body>
-</html>
+{% block main %}
+    <h2>Se ha creado la pregunta con id: {{ id }}</h2>
+{% endblock %}

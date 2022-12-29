@@ -1,22 +1,23 @@
 <!-- create.html -->
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Crear</title>
-</head>
-<body>
-    <h1> Crear Pregunta </h1>
+{% extends 'base.html' %}
 
-    <form method='post'>
+{% block main %}
 
-            <b>Pregunta</b> <input type="text" name="question"><br>
-            <b>Respuesta</b> <input type="text" name="answer"><br>
-
-            <input type="submit" name="submit" value="Enviar">
-            <input type="reset" name="reset" value="Borrar"><br>
+<div class="container col-6">
+    <form method='post'>    
+        <label for="question" class="form-label"><b>Pregunta:</b></label>
+        <input id="question" class="form-control" type="text" name="question">
+        <br><br>
+        <label for="answer" class="form-label"><b>Respuesta:</b></label>
+        <input id="answer" class="form-control" type="text" name="answer"><br>
+        <br>
+        <div class="d-flex justify-content-end">
+            <input type="submit" class="d-inline-block btn btn-primary mr-2 px-3" name="submit" value="Enviar">
+            <input type="reset" class="d-inline-block btn btn-danger ml-0 px-3" name="reset" value="Borrar"><br>
+        </div>
+        
     </form>
+</div> 
 
-    <p>Go to <a href="{{url_for('index')}}">Inicio</a></p>
-</body>
-</html>
+{% endblock %}

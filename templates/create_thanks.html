@@ -1,14 +1,8 @@
 <!-- createThanks.html  -->
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>¡Gracias!</title>
-</head>
-<body>
-    <h1>¡Gracias por enviarnos una pregunta!</h1>
-    <p> Tu pregunta es : <b> {{ question }} </b> </p>
+{% extends "base.html" %}
 
-    <p>Ir a <a href="{{url_for('index')}}">Inicio</a></p>
-</body>
-</html>
+{% block main %}
+    <h2>¡Gracias por enviarnos una pregunta!</h2>
+    <p> Tu pregunta es : <b> {{ question }} </b> </p>
+{% endblock %}

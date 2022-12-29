@@ -2,10 +2,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> {{ title }} - App de Preguntas</title>
+    {% block head %}
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <!-- Importamos Roboto en 400, 500 y 700 de Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+        <title> {{ title }} - App de Preguntas</title>
+    {% endblock %}
 </head>
 <body>
     <h1> {{ title }} </h1>
@@ -14,6 +21,10 @@
         {% endblock %}
     </div>
     {% block footer %}
+    <footer id="footer" class="bg bg-dark text-light text-center fixed-bottom pt-2 pb-1">
+        <h4>App de Preguntas</h4>
+        <p>Ir a <a href="{{url_for('index')}}">Inicio</a></p>        
+    </footer>
     {% endblock %}
 </body>
 </html>

@@ -15,14 +15,14 @@ con.close()
 @app.route('/')  # root : main page
 def index():
     # by default, 'render_template' looks inside the folder 'template'
-    return render_template('index.html')
+    return render_template('index.html', title='Inicio')
 
 # Create question
 @app.route('/create', methods=['GET', 'POST'])
 def create():
     if request.method == 'GET':
         # send the form
-        return render_template('create.html')
+        return render_template('create.html', title='Crear Pregunta')
     elif request.method == 'POST':
         # read data from the form and save in variable
         question = request.form['question']
@@ -37,14 +37,12 @@ def create():
                 (question, answer))
             con.commit() # apply changes
             # go to thanks page
-            return render_template('create_thanks.html', question=question)
+            return render_template('create_thanks.html', question=question, title='¡Gracias!')
         except con.Error as err: # if error
             # then display the error in 'database_error.html' page
-            return render_template('db_error.html', error=err)
+            return render_template('db_error.html', error=err, title='Error de conexión')
         finally:
             con.close() # close the connection
-        
-        # return render_template('create_thanks.html', question=question)
 
     else:
         return 'Método no permitido', 405 # 400 de Bad Request o 405 de método no permitido
@@ -60,38 +58,31 @@ def questions():
         c.execute(f"SELECT ID, Question FROM {db_table}")
         questions = c.fetchall()   # tomamos todos los valores del select
         con.commit() # apply changes
-        return render_template('questions.html', questions=questions)
+        return render_template('questions.html', questions=questions, title='Todas las Preguntas')
     except con.Error as err: # if error
         # then display the error in 'database_error.html' page
-        return render_template('db_error.html', error=err)
+        return render_template('db_error.html', error=err, title='Error de conexión')
     finally:
         con.close() # close the connection
-    
-    # return render_template('questions.html', questions=questions)  # revisar
 
 # Display question
 @app.route('/question/<int:id>', methods=['GET', 'POST'])
 def question(id):
     if request.method == 'GET':
-        # send the form
-        # code to read the question from database
         try:
             con = sql.connect(db_name)
             c =  con.cursor() # cursor
-            # read question : SQLite index start from 1 (see index.html)
-            query = f"Select Question FROM {db_table} where id = {id}"
+            query = f"Select * FROM {db_table} where id = {id}"
             c.execute(query)
-            question = c.fetchone() # fetch the data from cursor
+            questions = c.fetchone()
             con.commit() # apply changes
             # go to thanks page : pass the value of tuple using question[0]
-            return render_template('question.html', question=question[0])
+            return render_template('question.html', question=questions[1], title='Pregunta')
         except con.Error as err: # if error
             # then display the error in 'database_error.html' page
-            return render_template('db_error.html', error=err)
+            return render_template('db_error.html', error=err, title='Error de conexión')
         finally:
             con.close() # close the connection
-
-        return render_template('question.html', question=question) # revisar
     else: # request.method == 'POST':
         # read and check answers
         submitted_answer = request.form['answer']
@@ -100,27 +91,23 @@ def question(id):
         try:
             con = sql.connect(db_name)
             c =  con.cursor() # cursor
-            # read answer : SQLite index start from 1 (see index.html)
-            
             query = f"Select Answer FROM {db_table} where id = {id}" # revisar
-            # query = f"Select Answer FROM {db_table} where id = {0}".format(id)
-
             c.execute(query)
             correct_answer = c.fetchone()[0] # fetch and store tuple-value (see [0])
             con.commit() # apply changes
         except con.Error as err: # if error
             # then display the error in 'database_error.html' page
-            return render_template('db_error.html', error=err)
+            return render_template('db_error.html', error=err, title='Error de conexión')
         finally:
             con.close() # close the connection
 
         if submitted_answer == correct_answer:
-            title = '¡Correcto!'
-            return render_template('correct.html', id=id, title=title)
+            return render_template('correct.html', id=id, title='¡Correcto!')
         else:
             return render_template('sorry.html',
                 answer = correct_answer,
-                yourAnswer = submitted_answer
+                yourAnswer = submitted_answer, 
+                title="Vuelve a intentarlo :("
             )
 
 # Edit question
@@ -137,10 +124,10 @@ def edit(id):
             c.execute(f"SELECT * FROM {db_table} WHERE id = {id}")
             id, question, answer = c.fetchone() # current values for id, question, answer
             con.commit()
-            return render_template('edit.html', id=id, question=question, answer=answer)
+            return render_template('edit.html', id=id, question=question, answer=answer, title=f"Editar Pregunta #{id}")
         except con.Error as err: # if error
             # then display the error in 'database_error.html' page
-            return render_template('db_error.html', error=err)
+            return render_template('db_error.html', error=err, title='Error de conexión')
         finally:
             con.close()
     elif request.method == 'POST':
@@ -158,7 +145,7 @@ def edit(id):
             con.commit()
         except con.Error as err: # if error
             # then display the error in 'database_error.html' page
-            return render_template('db_error.html', error=err)
+            return render_template('db_error.html', error=err, title='Error de conexión')
         finally:
             con.close()
         
@@ -183,10 +170,10 @@ def edit(id):
             # print(question, answer)
             con.commit()
             # go to thanks page
-            return render_template('edit_thanks.html', id=id, question=question, answer=answer)
+            return render_template('edit_thanks.html', id=id, question=question, answer=answer, title='¡Editado!')
         except con.Error as err: # if error
             # then display the error in 'database_error.html' page
-            return render_template('db_error.html', error=err)
+            return render_template('db_error.html', error=err, title='Error de conexión')
         finally:
             con.close() # close the connection
 # Delete question
@@ -199,9 +186,9 @@ def delete(id):
         c =  con.cursor() # cursor
         c.execute(f"DELETE FROM {db_table} WHERE id = {id}")
         con.commit() # apply changes
-        return render_template('delete_thanks.html', id = id)
+        return render_template('delete_thanks.html', id = id, title='¡Borrado!')
     except con.Error as err: # if error
         # then display the error in 'database_error.html' page
-        return render_template('db_error.html', error=err)
+        return render_template('db_error.html', error=err, title='Error de conexión')
     finally:
         con.close() # close the connection

@@ -1,3 +1,8 @@
 body {
     background-color: beige;
+    padding: 10px;
+}
+.bold th{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
 }

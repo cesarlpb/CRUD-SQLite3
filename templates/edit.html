@@ -1,12 +1,9 @@
 <!-- create.html -->
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Editar</title>
-</head>
-<body>
-    <h1> Editar Pregunta {{ id }} </h1>
+{% extends 'base.html' %}
+
+{% block main %}
+    <h2> Editar Pregunta {{ id }} </h2>
 
     <form method='post'>
 
@@ -28,6 +25,4 @@
             <input type="reset" name="reset" value="Borrar"><br>
     </form>
 
-    <p>Go to <a href="{{url_for('index')}}">Inicio</a></p>
-</body>
-</html>
+{% endblock %}
