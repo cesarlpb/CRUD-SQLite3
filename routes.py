@@ -82,7 +82,7 @@ def question(id):
         try:
             con = sql.connect(db_name)
             c =  con.cursor() # cursor
-            query = f"Select * FROM {db_table} where id = {id}"
+            query = f"SELECT * FROM {db_table} WHERE id = {id}"
             c.execute(query)
             questions = c.fetchone()
             con.commit() # apply changes
@@ -101,7 +101,7 @@ def question(id):
         try:
             con = sql.connect(db_name)
             c =  con.cursor() # cursor
-            query = f"Select Answer FROM {db_table} where id = {id}" # revisar
+            query = f"SELECT Answer FROM {db_table} where id = {id}" # revisar
             c.execute(query)
             correct_answer = c.fetchone()[0] # fetch and store tuple-value (see [0])
             con.commit() # apply changes
