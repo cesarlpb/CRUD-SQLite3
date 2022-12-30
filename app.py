@@ -25,9 +25,10 @@ table_definition = "(Id INT AUTO_INCREMENT PRIMARY KEY, Question VARCHAR(255), A
 table_columns = f"(Question, Answer)"
 table_values = f"('What is your name?', 'John')"
 
-print(f"CREATE TABLE IF NOT EXISTS {table_name} {table_definition}")
 cursor.execute(f"CREATE TABLE IF NOT EXISTS {table_name} {table_definition}")
+print(f"INSERT INTO {table_name} {table_columns} VALUES {table_values}")
 cursor.execute(f"INSERT INTO {table_name} {table_columns} VALUES {table_values}")
+conn.commit()
 
 #Closing the cursor
 cursor.close()
@@ -40,4 +41,4 @@ from routes import *
 if __name__ == '__main__':
     # '0.0.0.0' = 127.0.0.1 i.e. localhost
     # port = 5000 : we can modify it for localhost
-    app.run(host='0.0.0.0', port=5010, debug=True) # local webserver : app.run()
+    app.run(host='0.0.0.0', port=5020, debug=True) # local webserver : app.run()
