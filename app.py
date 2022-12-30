@@ -13,30 +13,8 @@ app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 
 mysql.init_app(app)
 
-# To use MySQL, we need a cursor:
-    # Creating a connection cursor
-
-conn = mysql.connect()
-cursor = conn.cursor()
-
-# To create a table:
-table_name = "test" # <--- Change table name
-table_definition = "(Id INT AUTO_INCREMENT PRIMARY KEY, Question VARCHAR(255), Answer VARCHAR(255))"
-table_columns = f"(Question, Answer)"
-table_values = f"('What is your name?', 'John')"
-
-cursor.execute(f"CREATE TABLE IF NOT EXISTS {table_name} {table_definition}")
-print(f"INSERT INTO {table_name} {table_columns} VALUES {table_values}")
-cursor.execute(f"INSERT INTO {table_name} {table_columns} VALUES {table_values}")
-conn.commit()
-
-#Closing the cursor
-cursor.close()
-conn.close()
-
 # import routes
 from routes import *
-
 
 if __name__ == '__main__':
     # '0.0.0.0' = 127.0.0.1 i.e. localhost
