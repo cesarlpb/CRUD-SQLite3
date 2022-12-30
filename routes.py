@@ -6,7 +6,7 @@ from utils import *
 
 db_name = 'app.db'
 db_table = 'test'
-create_table_if_not_exist(db_name, db_table) # CREATE TABLE IF NOT EXISTS test (Id INTEGER PRIMARY KEY AUTOINCREMENT, Question TEXT, Answer TEXT);
+create_table_if_not_exist(db_name, db_table) # add validation to show error if table not created
 
 # home page
 @app.route('/')  # root : main page
