@@ -38,20 +38,28 @@ def read_from_db(db_name : str, db_table : str, cols : list, id : int):
         con.close()
 
 # Write to db functions
-def write_to_db(db_name, db_table, cols, values):
+def write_to_db(db_name : str, db_table : str, values : list[str, str]):
     # INSERT no necesita id porque es autoincremental
-    pass
-    # try:
-    #     con = sql.connect(db_name)
-    #     c =  con.cursor() # cursor
-    #     c.execute(f"INSERT INTO {db_table} ({cols}) VALUES ({values})")
-    #     con.commit() # apply changes
-    #     return True
-    # except con.Error as err: # if error
-    #     # then display the error in 'database_error.html' page
-    #     return render_template('db_error.html', error=err, title='Error de conexión')
-    # finally:
-    #     con.close() # close the connection
+    try:
+        con = sql.connect(db_name)
+        if len(values) != 2:
+            raise con.Error('Se requieren 2 valores')
+        elif not values[0] or not values[1]:
+            raise con.Error('No se pueden insertar valores vacíos')
+        else:
+            try:
+                db_values = f"'{values[0]}', '{values[1]}'"
+            except TypeError as err:
+                return err
+        c =  con.cursor() # cursor
+        print(f"INSERT INTO {db_table} (Question, Answer) VALUES ({db_values})")
+        c.execute(f"INSERT INTO {db_table} (Question, Answer) VALUES ({db_values})")
+        con.commit() # apply changes
+        return True
+    except con.Error as err: # if error
+        return err
+    finally:
+        con.close() # close the connection
 # Update db functions
 def update_db(db_name, db_table, cols, values, id):
     # id es requerido
@@ -68,7 +76,7 @@ def update_db(db_name, db_table, cols, values, id):
     # finally:
     #     con.close() # close the connection
 # Delete from db functions
-def delete_from_db(db_name, db_table, id):
+def delete_from_db(db_name : str, db_table : str, id : int):
     # Id es requerido
     try:
         con = sql.connect(db_name)

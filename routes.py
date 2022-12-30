@@ -32,22 +32,12 @@ def create():
         # read data from the form and save in variable
         question = request.form['question']
         answer = request.form['answer']
-
-        # store in database
-        try:
-            con = sql.connect(db_name)
-            c =  con.cursor() # cursor
-            # insert data
-            c.execute(f"INSERT INTO {db_table} (question, answer) VALUES (?,?)",
-                (question, answer))
-            con.commit() # apply changes
-            # go to thanks page
+        # store in database with write_to_db function
+        is_saved_in_db = write_to_db(db_name, db_table, [question, answer]) # INSERT INTO test (Question, Answer) VALUES (question, answer);
+        if is_saved_in_db is True:
             return render_template('create_thanks.html', question=question, title='¡Gracias!')
-        except con.Error as err: # if error
-            # then display the error in 'database_error.html' page
-            return render_template('db_error.html', error=err, title='Error de conexión')
-        finally:
-            con.close() # close the connection
+        else:
+            return render_template('db_error.html', error=is_saved_in_db, title='Error de conexión')
     else:
         return 'Método no permitido', 405 # 400 de Bad Request o 405 de método no permitido
 
