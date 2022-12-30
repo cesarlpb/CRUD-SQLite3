@@ -37,4 +37,4 @@ python3 app.py
 
 - `main`: Contiene la aplicación con SQLite3 en su primera versión, enlace: [main](https://github.com/cesarlpb/CRUD-SQLite3)
 - `refactor`: Creamos funciones para evitar repeticiones de código con bloques try/except, enlace: [refactor](https://github.com/cesarlpb/CRUD-SQLite3/tree/refactor)
-- `mysql`: Implementamos CRUD con MySQL
+- `mysql`: Implementamos CRUD con MySQL, enlace: [mysql](https://github.com/cesarlpb/CRUD-SQLite3/tree/mysql)
