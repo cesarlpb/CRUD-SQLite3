@@ -94,57 +94,36 @@ def edit(id):
     # update test set question = question, answer = answer where id = id
     # html -> id
     if request.method == 'GET':
-        try:
-            con = sql.connect(db_name)
-            c =  con.cursor()
-            c.execute(f"SELECT * FROM {db_table} WHERE id = {id}")
-            id, question, answer = c.fetchone() # current values for id, question, answer
-            con.commit()
+        # read from database with read_from_db function    
+        question = read_from_db(db_name, db_table, ["Question", "Answer"], id) # SELECT * FROM test WHERE id = id;
+        if isinstance(question, sql.OperationalError) or isinstance(question, sql.Error):
+            return render_template('db_error.html', error=question, title='Error de conexión')    
+        else:
+            question, answer = question
             return render_template('edit.html', id=id, question=question, answer=answer, title=f"Editar Pregunta #{id}")
-        except con.Error as err: # if error
-            # then display the error in 'database_error.html' page
-            return render_template('db_error.html', error=err, title='Error de conexión')
-        finally:
-            con.close()
     elif request.method == 'POST':
         # id MUST NOT be changed
             # We store values from form
         new_question = request.form['question']
         new_answer = request.form['answer']
-        
-        # We read current values from database
-        try:
-            con = sql.connect(db_name)
-            c =  con.cursor()
-            c.execute(f"SELECT Question, Answer FROM {db_table} WHERE id = {id}")
-            question, answer = c.fetchone() # current values for id, question, answer
-            con.commit()
-        except con.Error as err: # if error
-            # then display the error in 'database_error.html' page
-            return render_template('db_error.html', error=err, title='Error de conexión')
-        finally:
-            con.close()
-        
-        # We validate NOT to have empty fields for update
-        if new_question != None or new_question != "":
-            question = new_question
-        if new_answer != None or new_answer != "":
-            answer = new_answer
-        
-        # Finally, we update the database
+        data = read_from_db(db_name, db_table, ["Question", "Answer"], id) # SELECT Question, Answer FROM test WHERE id = id;
+        if isinstance(data, sql.OperationalError) or isinstance(data, sql.Error):
+            return render_template('db_error.html', error=data, title='Error de conexión')
+        else:
+            question, answer = data
+            # We validate NOT to have empty fields for update
+            if new_question != None or new_question != "":
+                question = new_question
+            if new_answer != None or new_answer != "":
+                answer = new_answer
+            # Finally, we update the database
         try:
             con = sql.connect(db_name)
             c =  con.cursor() # cursor
-            
-            # print(f"UPDATE {db_table} SET Question={question}, Answer={answer} WHERE id = {id}")
             c.execute(f"UPDATE {db_table} SET Question='{question}', Answer='{answer}' WHERE id = {id}")
             con.commit() # apply changes
-
             # Reading data to display in thanks page
-            c.execute(f"SELECT Question, Answer FROM {db_table} WHERE id = {id}")
-            question, answer = c.fetchone() # current values for id, question, answer
-            # print(question, answer)
-            con.commit()
+            question, answer = read_from_db(db_name, db_table, ["Question", "Answer"], id) # SELECT Question, Answer FROM test WHERE id = id;
             # go to thanks page
             return render_template('edit_thanks.html', id=id, question=question, answer=answer, title='¡Editado!')
         except con.Error as err: # if error
