@@ -61,20 +61,26 @@ def write_to_db(db_name : str, db_table : str, values : list[str, str]):
     finally:
         con.close() # close the connection
 # Update db functions
-def update_db(db_name, db_table, cols, values, id):
+def update_db(db_name : str, db_table : str, values : list[str, str], id : int):
     # id es requerido
-    pass
-    # try:
-    #     con = sql.connect(db_name)
-    #     c =  con.cursor() # cursor
-    #     c.execute(f"UPDATE {db_table} SET {cols} WHERE id = {id}")
-    #     con.commit() # apply changes
-    #     return True
-    # except con.Error as err: # if error
-    #     # then display the error in 'database_error.html' page
-    #     return render_template('db_error.html', error=err, title='Error de conexión')
-    # finally:
-    #     con.close() # close the connection
+    try:
+        con = sql.connect(db_name)
+        c =  con.cursor() # cursor
+        
+        print(f"UPDATE {db_table} SET Question='{values[0]}', Answer='{values[1]}' WHERE id = {id}")
+        
+        # si no se puede, False
+
+        
+        # si se puede actualizar, entonces devuelve True
+        c.execute(f"UPDATE {db_table} SET Question='{values[0]}', Answer='{values[1]}' WHERE id = {id}")
+        con.commit() # apply changes
+        return True 
+        
+    except con.Error as err: # if error
+        return err
+    finally:
+        con.close() # close the connection
 # Delete from db functions
 def delete_from_db(db_name : str, db_table : str, id : int):
     # Id es requerido
