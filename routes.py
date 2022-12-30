@@ -4,13 +4,9 @@ from app import app
 from flask import render_template, request
 from utils import *
 
-# connect to qa_database.sq (database will be created, if not exist)
 db_name = 'app.db'
 db_table = 'test'
-con = sql.connect(db_name)
-con.execute(f'CREATE TABLE IF NOT EXISTS {db_table} (ID INTEGER PRIMARY KEY AUTOINCREMENT,'
-            + 'Question TEXT, Answer TEXT)')
-con.close()
+create_table_if_not_exist(db_name, db_table) # CREATE TABLE IF NOT EXISTS test (Id INTEGER PRIMARY KEY AUTOINCREMENT, Question TEXT, Answer TEXT);
 
 # home page
 @app.route('/')  # root : main page

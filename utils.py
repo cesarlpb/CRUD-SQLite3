@@ -1,6 +1,19 @@
 #%%
 import sqlite3 as sql
 
+# Create table if not exist
+def create_table_if_not_exist(db_name : str, db_table : str):
+    try:
+        con = sql.connect(db_name)
+        c = con.cursor()
+        c.execute(f"CREATE TABLE IF NOT EXISTS {db_table} (Id INTEGER PRIMARY KEY AUTOINCREMENT, Question TEXT, Answer TEXT)")
+        con.commit()
+        return True
+    except con.Error as err:
+        return err
+    finally:
+        con.close()
+
 # Read from db functions
 def read_from_db(db_name : str, db_table : str, cols : list, id : int):
     # si no recibe id, entonces devuelve todos los registros
