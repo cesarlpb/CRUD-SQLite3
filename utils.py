@@ -15,7 +15,7 @@ def read_from_db(db_name : str, db_table : str, cols : list, id : int):
             valid_cols = ['id', 'question', 'answer']
             for col in cols:
                 if col.lower() not in valid_cols:
-                    raise Exception(f'{col} no es una columna válida')
+                    raise con.Error(f'{col} no es una columna válida')
             db_cols = ', '.join(cols)
         
         if id < 1:
@@ -29,11 +29,12 @@ def read_from_db(db_name : str, db_table : str, cols : list, id : int):
     except con.Error as err: # if error
         return err
     finally:
-        data = c.execute(f"SELECT * FROM {db_table}")
-        cols = []
-        for column in data.description:
-            cols.append(column[0])
-        print(cols)
+        # pasar a una función aparte <---------------
+        # data = c.execute(f"SELECT * FROM {db_table}")
+        # cols = []
+        # for column in data.description:
+        #     cols.append(column[0])
+        # print(cols)
         con.close()
 
 # Write to db functions

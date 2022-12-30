@@ -14,7 +14,7 @@
         <h2>Contestar Preguntas</h2>
         {% if not questions %}
             <p class="text-center bg bg-info p-2">Todavía no hay preguntas para contestar</p>
-        {% endif %}
+        {% else %}
         {% for question in questions %}
         <ul style="list-style-type: none; padding-left:0;">
             <li class="mb-4">
@@ -22,6 +22,7 @@
             </li>
         </ul>
         {% endfor %}
+        {% endif %}
     </div>
     
 {% endblock %}
