@@ -1,8 +1,21 @@
-body {
+body, html {
     background-color: beige;
-    padding: 10px;
+    padding: 0px;
+    margin: 0px;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 .bold th{
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
+}
+
+#footer{
+    position: absolute;
+    width: 100vw;
+    bottom: 0;
+}
+#questions{
+    max-height: 60vh;
+    overflow-y: auto;
 }
