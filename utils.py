@@ -29,7 +29,7 @@ def read_from_db(db_name : str, db_table : str, cols : list, id : int):
     except con.Error as err: # if error
         return err
     finally:
-        # pasar a una función aparte <---------------
+        # Todo: pasar a una función aparte para determinar dinámicamente las columnas
         # data = c.execute(f"SELECT * FROM {db_table}")
         # cols = []
         # for column in data.description:
@@ -63,24 +63,20 @@ def write_to_db(db_name : str, db_table : str, values : list[str, str]):
 # Update db functions
 def update_db(db_name : str, db_table : str, values : list[str, str], id : int):
     # id es requerido
-    try:
-        con = sql.connect(db_name)
-        c =  con.cursor() # cursor
-        
-        print(f"UPDATE {db_table} SET Question='{values[0]}', Answer='{values[1]}' WHERE id = {id}")
-        
-        # si no se puede, False
-
-        
-        # si se puede actualizar, entonces devuelve True
-        c.execute(f"UPDATE {db_table} SET Question='{values[0]}', Answer='{values[1]}' WHERE id = {id}")
-        con.commit() # apply changes
-        return True 
-        
-    except con.Error as err: # if error
-        return err
-    finally:
-        con.close() # close the connection
+    is_valid_id = bool(read_from_db(db_name, db_table, ["Id"], id)) # True if id exists, False otherwise
+    if not is_valid_id:
+        return False
+    else:
+        try:
+            con = sql.connect(db_name)
+            c =  con.cursor() # cursor
+            c.execute(f"UPDATE {db_table} SET Question='{values[0]}', Answer='{values[1]}' WHERE id = {id}")
+            con.commit() # apply changes
+            return True 
+        except con.Error as err: # if error
+            return err
+        finally:
+            con.close() # close the connection
 # Delete from db functions
 def delete_from_db(db_name : str, db_table : str, id : int):
     # Id es requerido

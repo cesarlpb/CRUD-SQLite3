@@ -107,20 +107,16 @@ def edit(id):
             if new_answer != None or new_answer != "":
                 answer = new_answer
             # Finally, we update the database
-        try:
-            con = sql.connect(db_name)
-            c =  con.cursor() # cursor
-            c.execute(f"UPDATE {db_table} SET Question='{question}', Answer='{answer}' WHERE id = {id}")
-            con.commit() # apply changes
-            # Reading data to display in thanks page
-            question, answer = read_from_db(db_name, db_table, ["Question", "Answer"], id) # SELECT Question, Answer FROM test WHERE id = id;
-            # go to thanks page
-            return render_template('edit_thanks.html', id=id, question=question, answer=answer, title='¡Editado!')
-        except con.Error as err: # if error
-            # then display the error in 'database_error.html' page
-            return render_template('db_error.html', error=err, title='Error de conexión')
-        finally:
-            con.close() # close the connection
+            is_db_updated = update_db(db_name, db_table, [question, answer], id)
+            if is_db_updated is True:
+                # Reading data to display in thanks page
+                question, answer = read_from_db(db_name, db_table, ["Question", "Answer"], id) # SELECT Question, Answer FROM test WHERE id = id;                
+                return render_template('edit_thanks.html', id=id, question=question, answer=answer, title='¡Editado!')
+            elif is_db_updated is False:
+                return render_template('db_error.html', error=f"El id {id} no existe.", title='Error')
+            else:
+                return render_template('db_error.html', error=is_db_updated, title='Error de conexión')
+
 # Delete question
 @app.route('/delete/<int:id>', methods=['GET'])
 def delete(id):
