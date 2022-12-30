@@ -54,68 +54,34 @@ def create():
 # Display all questions in db
 @app.route('/questions', methods=['GET'])
 def questions():
-    # read from database
-    try:
-        con = sql.connect(db_name)
-        c =  con.cursor() # cursor
-        # read data
-        c.execute(f"SELECT ID, Question FROM {db_table}")
-        questions = c.fetchall()   # tomamos todos los valores del select
-        con.commit() # apply changes
+    # read from database with read_from_db function
+    questions = read_from_db(db_name, db_table, ["Id", "Question"], 0) # SELECT Id, Question FROM test;
+    if isinstance(questions, sql.OperationalError) or isinstance(questions, sql.Error):
+        return render_template('db_error.html', error=questions, title='Error de conexión')
+    else:
         return render_template('questions.html', questions=questions, title='Todas las Preguntas')
-    except con.Error as err: # if error
-        # then display the error in 'database_error.html' page
-        return render_template('db_error.html', error=err, title='Error de conexión')
-    finally:
-        con.close() # close the connection
 
 # Display question
 @app.route('/question/<int:id>', methods=['GET', 'POST'])
 def question(id):
     if request.method == 'GET':
-        # questions = read_from_db(id)
-        try:
-
-            con = sql.connect(db_name)
-            c =  con.cursor() # cursor
-            query = f"SELECT * FROM {db_table} WHERE id = {id}"
-            c.execute(query)
-            questions = c.fetchone()
-            con.commit() # apply changes
-            # go to thanks page : pass the value of tuple using question[0]
-            
-            
-            return render_template('question.html', question=questions[1], title='Pregunta')
-        except con.Error as err: # if error
-            # then display the error in 'database_error.html' page
-            return render_template('db_error.html', error=err, title='Error de conexión')
-        finally:
-            con.close() # close the connection
-    else: # request.method == 'POST':
-        # read and check answers
-        submitted_answer = request.form['answer']
-
-    # return
-
-        # code to read the answer from database
-        try:
-            con = sql.connect(db_name)
-            c =  con.cursor() # cursor
-            query = f"SELECT Answer FROM {db_table} where id = {id}" # revisar
-            c.execute(query)
-            correct_answer = c.fetchone()[0] # fetch and store tuple-value (see [0])
-            con.commit() # apply changes
-        except con.Error as err: # if error
-            # then display the error in 'database_error.html' page
-            return render_template('db_error.html', error=err, title='Error de conexión')
-        finally:
-            con.close() # close the connection
-
-        if submitted_answer == correct_answer:
+        # read from database with read_from_db function
+        questions = read_from_db(db_name, db_table, ["Question"], id) # SELECT * FROM test WHERE id = id;
+        if isinstance(questions, sql.OperationalError) or isinstance(questions, sql.Error):
+            return render_template('db_error.html', error=questions, title='Error de conexión')
+        else:
+            return render_template('question.html', question=questions[0], title='Pregunta')
+    elif request.method == 'POST':
+        submitted_answer = request.form['answer'] # answer from form submitted by user
+        # read from database with read_from_db function    
+        correct_answer = read_from_db(db_name, db_table, ["Answer"], id) # SELECT Answer FROM test WHERE id = {id};
+        if isinstance(correct_answer, sql.OperationalError) or isinstance(correct_answer, sql.Error):
+            return render_template('db_error.html', error=correct_answer, title='Error de conexión')
+        elif submitted_answer == correct_answer[0]:
             return render_template('correct.html', id=id, title='¡Correcto!')
         else:
             return render_template('sorry.html',
-                answer = correct_answer,
+                answer = correct_answer[0],
                 yourAnswer = submitted_answer, 
                 title="Vuelve a intentarlo :("
             )
