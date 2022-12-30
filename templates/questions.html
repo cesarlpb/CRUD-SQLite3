@@ -4,27 +4,37 @@
 
 {% block main %}
     <h2>Preguntas</h2>
-    <table class="table table-warning table-hover">
-        <tr class="table-dark text-dark text-center bold">
-            <th>#</th>
-            <th>Pregunta</th>
-            <th>Responder</th>
-            <th colspan="2">Opciones</th>
-        </tr>
-        {% for question in questions %}
-        <tr class="text-center">
-            <td>{{ question[0] }}</td>
-            <td>{{ question[1] }}</td>
-            <td>
-                <a href="{{url_for('question', id=question[0])}}">Responder #{{ question[0] }}</a>
-            </td>
-            <td>
-                <a href="{{url_for('edit', id=question[0])}}" style="border: 1px solid black; color: black; padding: 0 10px; border-radius: 10px;"><img width=10 src="{{ url_for('static', filename='/img/iconos/pencil.png') }}" alt="editar"> Editar #{{ question[0] }}</a>
-            </td>
-            <td>
-                <a href="{{url_for('delete', id=question[0])}}" style="border: 1px solid black; color: black; padding: 0 10px; border-radius: 10px;"><img width=10 src="{{ url_for('static', filename='/img/iconos/bin.png') }}" alt="borrar"> Borrar #{{ question[0] }} </a>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+    <div id="questions" class="border py-0">
+        <table class="table table-warning table-hover mb-0">
+            <tr class="table-dark text-dark text-center bold">
+                <th>#</th>
+                <th>Pregunta</th>
+                <th>Responder</th>
+                <th colspan="2">Opciones</th>
+            </tr>
+            {% for question in questions %}
+            <tr class="text-center">
+                <td>{{ question[0] }}</td>
+                <td>{{ question[1] }}</td>
+                <td>
+                    <a href="{{url_for('question', id=question[0])}}" class="btn btn-primary">Responder #{{ question[0] }}</a>
+                </td>
+                <td>
+                    <a href="{{url_for('edit', id=question[0])}}" class="btn btn-warning d-flex align-items-center justify-content-center px-0">
+                        <img width=25 class="mr-1"
+                        src="{{ url_for('static', filename='/img/iconos/pencil-white.png') }}" alt="editar">
+                        <span>Editar #{{ question[0] }}</span>
+                    </a>
+                </td>
+                <td>
+                    <a href="{{url_for('delete', id=question[0])}}" class="btn btn-danger d-flex align-items-center justify-content-center px-0">
+                        <img width=25 class="mr-1"
+                        src="{{ url_for('static', filename='/img/iconos/bin-white.png') }}" alt="borrar">
+                        <span>Borrar #{{ question[0] }}</span> 
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 {% endblock %}

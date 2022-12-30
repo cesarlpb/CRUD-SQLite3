@@ -40,41 +40,43 @@
     {% endblock %}
 
     <!-- block main -->
-    <div class="container col-6">
-        <h1 class="mt-5 mb-2 text-center">{{ title }}</h1>
+    <div class="container col-8">
+        <h1 class="mt-5 mb-2 text-center">{{ title }} - App de Preguntas</h1>
         <hr>
         {% block main %}
         {% endblock %}
     </div>
-
+    <div class="my-3"></div>
     {% block footer %}
-    <footer id="footer" class="bg bg-dark text-light text-center fixed-bottom pt-4 pb-2">
-        <div class="row justify-content-around align-items-start">
-            <div class="col-5">
-                <h4>App de Preguntas</h4>
-                <p class="d-flex align-items-center justify-content-center">
-                    <a class="btn btn-light" href="{{url_for('index')}}">
-                        <img class="mr-1" width=20 src="{{ url_for('static', filename='/img/iconos/home.png') }}" alt="inicio">
-                        Ir a Inicio
-                    </a>
-                </p>    
-            </div>
-
-            <div class="col-5">
-                <h4>Stack</h4>
-                <div class="container col">
-                    <ul style="list-style-type: none; padding-left: 0px;">
-                        <li><strong>Front-end:</strong> HTML, CSS, Bootstrap</li>
-                        <li><strong>Back-end:</strong> Flask, Python, SQLite3</li>
-                        <li><strong>Despliegue:</strong> PythonEverywhere</li>
-                    </ul>
+    
+    <div class="mt-3">
+        <footer id="footer" class="bg bg-dark text-light text-center pt-3 pb-2">
+            <div class="row justify-content-around align-items-start">
+                <div class="col-4">
+                    <h4>App de Preguntas</h4>
+                    <p class="d-flex align-items-center justify-content-center">
+                        <a class="btn btn-light" href="{{url_for('index')}}">
+                            <img class="mr-1" width=20 src="{{ url_for('static', filename='/img/iconos/home.png') }}" alt="inicio">
+                            Ir a Inicio
+                        </a>
+                    </p>    
+                </div>
+                <div class="col-4 justify-content-center align-self-center">
+                    <p>&copy; 2022 - Todos los derechos reservados.</p>
+                </div>
+                <div class="col-4">
+                    <h4>Stack</h4>
+                    <div class="container col">
+                        <ul style="list-style-type: none; padding-left: 0px;">
+                            <li><strong>Front-end:</strong> HTML, CSS, Bootstrap</li>
+                            <li><strong>Back-end:</strong> Flask, Python, SQLite3</li>
+                            <li><strong>Despliegue:</strong> PythonEverywhere</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row justify-content-center">
-            <p>&copy; 2022 - Todos los derechos reservados.</p>
-        </div>
-    </footer>
+        </footer>
+    </div>
     {% endblock %}
 </body>
 </html>
