@@ -132,18 +132,12 @@ def edit(id):
         finally:
             con.close() # close the connection
 # Delete question
-@app.route('/delete/<int:id>', methods=['GET', 'POST'])
+@app.route('/delete/<int:id>', methods=['GET'])
 def delete(id):
     # html thanks page -> id
         # "Se ha borrado la pregunta con id: id" 
-    try:
-        con = sql.connect(db_name)
-        c =  con.cursor() # cursor
-        c.execute(f"DELETE FROM {db_table} WHERE id = {id}")
-        con.commit() # apply changes
+    response = delete_from_db(db_name, db_table, id)
+    if response == True:
         return render_template('delete_thanks.html', id = id, title='¡Borrado!')
-    except con.Error as err: # if error
-        # then display the error in 'database_error.html' page
-        return render_template('db_error.html', error=err, title='Error de conexión')
-    finally:
-        con.close() # close the connection
+    else:
+        return render_template('db_error.html', error=response, title='Error de conexión')

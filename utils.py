@@ -69,17 +69,15 @@ def update_db(db_name, db_table, cols, values, id):
     #     con.close() # close the connection
 # Delete from db functions
 def delete_from_db(db_name, db_table, id):
-    # id es requerido
-    pass
-    # try:
-    #     con = sql.connect(db_name)
-    #     c =  con.cursor() # cursor
-    #     c.execute(f"DELETE FROM {db_table} WHERE id = {id}")
-    #     con.commit() # apply changes
-    #     return True
-    # except con.Error as err: # if error
-    #     # then display the error in 'database_error.html' page
-    #     return render_template('db_error.html', error=err, title='Error de conexión')
-    # finally:
-    #     con.close() # close the connection
+    # Id es requerido
+    try:
+        con = sql.connect(db_name)
+        c =  con.cursor()
+        c.execute(f"DELETE FROM {db_table} WHERE id = {id}")
+        con.commit()
+        return True
+    except con.Error as err:
+        return err
+    finally:
+        con.close()
 # %%
