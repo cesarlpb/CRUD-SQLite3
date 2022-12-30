@@ -2,18 +2,23 @@
 import sqlite3 as sql # -> quitar import
 from app import app
 from flask import render_template, request
-from utils import *
+from sqlite3_utils import *
+from mysql_utils import *
+import pymysql
 
 db_name = 'app.db'
-db_table = 'test'
-create_table_if_not_exist(db_name, db_table) # add validation to show error if table not created
+mysql_db_name = 'test_db'
+db_table = 'test2'
+# Note: we don't need db_name in MySQL
+
+create_table_if_not_exist(mysql_db_name, db_table) # add validation to show error if table not created
 
 # home page
 @app.route('/')  # root : main page
 def index():
     # read from database using read_from_db function 
-    questions = read_from_db(db_name, db_table, [], 0) # SELECT * FROM test;
-    if isinstance(questions, sql.OperationalError) or isinstance(questions, sql.Error):
+    questions = read_from_db(mysql_db_name, "test", [], 0) # SELECT * FROM test;
+    if isinstance(questions, pymysql.err.ProgrammingError) or isinstance(questions, pymysql.err.Error):
         return render_template('db_error.html', error=questions, title='Error de conexión')
     else:
         return render_template('index.html', questions=questions, title='Inicio') 
